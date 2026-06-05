@@ -21,8 +21,8 @@
 
 | Service | Required | Port | Notes |
 |---------|----------|------|-------|
-| `npm start` | Yes (for WhatsApp) | `PORT` (3000) | Needs `PUBLIC_URL` + Twilio webhook for real WhatsApp |
-| GitHub API | Optional | — | Rate limits without `GITHUB_TOKEN`; required for private repos |
+| `npm start` | Yes | `PORT` (3000) | Panel web en `GET /` (móvil-friendly) |
+| GitHub API | Optional | — | Rate limits without `GITHUB_TOKEN` |
 
 ### Environment
 

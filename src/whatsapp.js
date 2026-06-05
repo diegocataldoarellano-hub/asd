@@ -70,9 +70,9 @@ export function validateTwilioSignature(req) {
   if (!authToken) return true;
   const signature = req.headers["x-twilio-signature"];
   if (!signature) return false;
-  const url =
-    process.env.PUBLIC_URL?.replace(/\/$/, "") + req.originalUrl ||
-    `${req.protocol}://${req.get("host")}${req.originalUrl}`;
+  const url = process.env.PUBLIC_URL
+    ? `${process.env.PUBLIC_URL.replace(/\/$/, "")}${req.originalUrl}`
+    : `${req.protocol}://${req.get("host")}${req.originalUrl}`;
   return twilio.validateRequest(authToken, signature, url, req.body);
 }
 
