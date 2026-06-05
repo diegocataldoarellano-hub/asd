@@ -1,0 +1,11 @@
+{
+  "owner": "diegocataldoarellano-hub",
+  "projects": [
+    {
+      "id": "asd",
+      "repo": "asd",
+      "label": "ASD (placeholder)",
+      "notifyOn": ["push", "pull_request", "workflow_run"]
+    }
+  ]
+}

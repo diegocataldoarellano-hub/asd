@@ -1,0 +1,22 @@
+{
+  "name": "proyecto-whatsapp-agent",
+  "version": "1.0.0",
+  "description": "Agente WhatsApp que informa el estado de cada proyecto (GitHub / Cursor Cloud)",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "chat": "node src/cli.js",
+    "test": "node --test test/*.test.js",
+    "lint": "node --check src/index.js && node --check src/agent.js && node --check src/github.js && node --check src/whatsapp.js && node --check src/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "twilio": "^5.4.0"
+  }
+}

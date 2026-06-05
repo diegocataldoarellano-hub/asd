@@ -2,26 +2,39 @@
 
 ## Cursor Cloud specific instructions
 
-This repository is currently a **placeholder**: it contains only `README.md` (`# asd`) and no application source, dependency manifests, or service definitions.
+### Product
 
-### What works today
+**Agente WhatsApp de proyectos** — servicio Node.js que informa por WhatsApp el estado de repos GitHub y envía alertas automáticas (push, PR, CI). Ver `README.md` para Twilio y webhooks.
 
-- Git operations against `origin` (`diegocataldoarellano-hub/asd`, branch `main`).
-- Standard shell tooling in the Cloud Agent VM.
+### Commands
 
-### When application code is added
+| Task | Command |
+|------|---------|
+| Install | `npm install` |
+| Lint | `npm run lint` |
+| Test | `npm test` |
+| Dev server | `npm run dev` |
+| Prod server | `npm start` |
+| Simular WhatsApp (sin Twilio) | `npm run chat -- "estado"` |
 
-After the repo includes real project files, future agents should:
+### Services
 
-1. **Discover stack** from lockfiles and docs (`package.json`, `pnpm-lock.yaml`, `requirements.txt`, `go.mod`, `docker-compose.yml`, `Makefile`, `README.md`, etc.).
-2. **Install dependencies** using the repo’s package manager (match the lockfile; do not guess).
-3. **Lint / test / run** using scripts documented in `README.md` or `package.json` `"scripts"` (or framework equivalents).
-4. **Start services** only outside the VM update script (e.g. databases via Docker Compose, dev servers via tmux). Document non-obvious ports, env vars, and startup order here once known.
+| Service | Required | Port | Notes |
+|---------|----------|------|-------|
+| `npm start` | Yes (for WhatsApp) | `PORT` (3000) | Needs `PUBLIC_URL` + Twilio webhook for real WhatsApp |
+| GitHub API | Optional | — | Rate limits without `GITHUB_TOKEN`; required for private repos |
 
-### Update script behavior
+### Environment
 
-The VM startup update script is intentionally minimal (`true`) until dependency files exist. Extend it only with idempotent install commands that match committed lockfiles—never start dev servers or migrations in the update script.
+Copy `.env.example` → `.env`. For WhatsApp from a phone you need Twilio credentials and a public HTTPS URL pointing to `/webhook/whatsapp`.
 
-### If setup still fails
+### Non-obvious notes
 
-If you expected a full application in this workspace, confirm the Cloud Agent is pointed at the correct GitHub repository and branch; this tree has no runnable product yet.
+- Incoming WhatsApp replies are sent via Twilio REST API, not TwiML `<Message>` — webhook returns empty `<Response>`.
+- `ALLOWED_WHATSAPP_NUMBERS` empty = open mode (dev only).
+- Add repos in `config/projects.json`; GitHub webhook only notifies tracked repos.
+- Hot reload: `npm run dev` uses `node --watch`.
+
+### Update script
+
+Runs `npm install` on VM startup (see `.cursor/environment.json` or cloud update script).
